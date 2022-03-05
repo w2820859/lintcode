@@ -1,0 +1,218 @@
+#! /usr/bin/python
+# -*- coding: utf-8 -*-
+import urllib
+import urllib2
+import json
+import traceback
+import time
+import sys
+import user
+
+COMMON_HEADER={
+#    'authority'        : 'www.lintcode.com',
+#    'pragma'           : 'no-cache',
+#    'cache-control'    : 'no-cache',
+#    'sec-ch-ua'        : '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
+#    'accept'           : 'application/json, text/plain, */*',
+#    'sec-ch-ua-mobile' : '?1',
+#    'browser-uuid'     : 'f0cef8cf-a6fd-409b-9ac0-5692846f3556',
+#    'app-version'      : '0.0.1.2',
+#    'user-agent'       : 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36',
+    'content-type'     : 'application/json;charset=UTF-8',
+#    'origin'           : 'https://www.lintcode.com',
+#    'sec-fetch-site'   : 'same-origin',
+#    'sec-fetch-mode'   : 'cors',
+#    'sec-fetch-dest'   : 'empty',
+#    'accept-language'  : 'zh-CN,zh;q=0.9',
+#    'cookie'           : 'uuid=7f84df8f-26c9-480c-aae9-3a480ad47370; _ga=GA1.2.71720982.1624128814; language_code=zh-cn; _gid=GA1.2.1050271631.1627273862; sessionid=887n3y2sb8dyz5p16870mrid5ihjaflp; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22122312%22%2C%22first_id%22%3A%2217ae3a55183634-0bebf52918cf41-70256232-733240-17ae3a55184c52%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%2C%22%24latest_referrer%22%3A%22%22%7D%2C%22%24device_id%22%3A%2217a259efc170-0d51a05589a7fd-37657200-1296000-17a259efc186c0%22%7D'
+}
+
+def login():
+    URL = 'https://www.lintcode.com/api/accounts/signin/'
+    DATA = '{"account":"%s","password":"%s"}' % (user.account, user.password)
+    HEADERS = COMMON_HEADER.copy()
+    HEADERS['referer'] = 'https://www.lintcode.com/accounts/signin/'
+    request = urllib2.Request(url=URL, data=DATA, headers=HEADERS)
+    resp = urllib2.urlopen(request).read()
+    resp_js = json.loads(resp)
+    result = {}
+    result["refresh"] = resp_js["data"]["refresh"]
+    result["access"] = resp_js["data"]["access"]
+    result["exp_timestamp"] = resp_js["data"]["access_exp"]
+    file = open("./token_file", "w")
+    file.write(json.dumps(result))
+
+def refresh_token(refresh_token):
+    #h=urllib2.HTTPSHandler(debuglevel=1)
+    #opener=urllib2.build_opener(h)
+    #urllib2.install_opener(opener)
+    URL = 'https://www.lintcode.com/v2/api/token-refresh/'
+    raw_data = {}
+    raw_data["refresh"] = refresh_token
+    DATA = json.dumps(raw_data)
+    HEADERS = COMMON_HEADER.copy()
+    #HEADERS['referer'] = 'https://www.lintcode.com/problem/1/'
+    request = urllib2.Request(url=URL, data=DATA, headers=HEADERS)
+    resp = urllib2.urlopen(request).read()
+    resp_js = json.loads(resp)
+    result = {}
+    result["refresh"] = resp_js["data"]["refresh"]
+    result["access"] = resp_js["data"]["access"]
+    result["exp_timestamp"] = resp_js["data"]["access_exp"]
+    file = open("./token_file", "w")
+    file.write(json.dumps(result))
+    file.close()
+    return result
+
+def submit_test(access_token, problem_id):
+    code_file = open("./code/" + str(problem_id) + "/code.cpp", "r")
+    code = ""
+    for l in code_file:
+        code += l
+    input_file = open("./code/" + str(problem_id) + "/input", "r")
+    input = ""
+    for l in input_file:
+        input += l
+    URL = 'https://www.lintcode.com/v2/api/submissions/'
+    raw_data = {
+        "is_test_submission"  :  True,
+        "problem_id"          :  problem_id,
+        "language"            :  "cpp",
+        "source"              :  99,
+        "input"               :  input,
+        "code"                :  code
+    }
+    DATA = json.dumps(raw_data)
+    HEADERS = COMMON_HEADER.copy()
+    HEADERS['authorization'] = 'Bearer ' + access_token
+    request = urllib2.Request(url=URL, data=DATA, headers=HEADERS)
+    resp = urllib2.urlopen(request).read()
+    resp_js = json.loads(resp)
+    if resp_js["code"] == 200 and resp_js["success"] == True:
+        return resp_js["data"]["id"]
+    else:
+        print "ERROR submit test failed,\n" + resp
+        exit(-1)
+
+def fetch_test_result(access_token, id):
+    URL = 'https://www.lintcode.com/api/submissions/refresh/?id={ID}&is_test_submission=true'.format(ID=id)
+    HEADERS = COMMON_HEADER.copy()
+    HEADERS['authorization'] = 'Bearer ' + access_token
+    request = urllib2.Request(url=URL, headers=HEADERS)
+    result = {}
+    print "Waitting..."
+    for i in range(10):
+        time.sleep(1)
+        resp = urllib2.urlopen(request).read()
+        resp_js = json.loads(resp)
+        if resp_js["status"] in ["Pending", "Running"]:
+            print resp_js["status"]
+            continue
+        else:
+            result = resp_js
+            break
+    return result
+
+def submit(access_token, problem_id):
+    code_file = open("./code/" + str(problem_id) + "/code.cpp", "r")
+    code = ""
+    for l in code_file:
+        code += l
+    URL = 'https://www.lintcode.com/v2/api/submissions/'
+    raw_data = {
+        "is_test_submission"  :  False,
+        "problem_id"          :  problem_id,
+        "language"            :  "cpp",
+        "source"              :  99,
+        "input"               :  None,
+        "code"                :  code
+    }
+    DATA = json.dumps(raw_data)
+    HEADERS = COMMON_HEADER.copy()
+    HEADERS['authorization'] = 'Bearer ' + access_token
+    request = urllib2.Request(url=URL, data=DATA, headers=HEADERS)
+    resp = urllib2.urlopen(request).read()
+    resp_js = json.loads(resp)
+    if resp_js["code"] == 200 and resp_js["success"] == True:
+        return resp_js["data"]["id"]
+    else:
+        print "ERROR submit test failed,\n" + resp
+        exit(-1)    
+
+def fetch_result(access_token, id):
+    URL = 'https://www.lintcode.com/api/submissions/refresh/?id={ID}'.format(ID=id)
+    HEADERS = COMMON_HEADER.copy()
+    HEADERS['authorization'] = 'Bearer ' + access_token
+    request = urllib2.Request(url=URL, headers=HEADERS)
+    result = {}
+    print "Waitting..."
+    for i in range(5):
+        time.sleep(1)
+        resp = urllib2.urlopen(request).read()
+        resp_js = json.loads(resp)
+        if resp_js["status"] in ["Pending", "Running"]:
+            print resp_js["status"]
+            continue
+        else:
+            result = resp_js
+            break
+    return result
+
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) == 2:
+            if sys.argv[1] == "login":
+                login()
+                print "login success"
+        elif len(sys.argv) == 3:
+            problem_id = sys.argv[2]
+            file = open("./token_file", "r")
+            token = json.loads(file.readline())
+            file.close()
+            curr_time = int(time.time())
+            if (int(token["exp_timestamp"]) - curr_time < 5):
+                print "begin refresh token"
+                token = refresh_token(token["refresh"])
+
+            result = {}
+            if sys.argv[1] == "test":
+                submit_id = submit_test(token["access"], problem_id)
+                result = fetch_test_result(token["access"], submit_id)
+            elif sys.argv[1] == "submit":
+                submit_id = submit(token["access"], problem_id)
+                result = fetch_result(token["access"], submit_id)
+            else:
+                print "param error"
+                exit(1)
+            #print result
+            if result["status"] == "Compile Error":
+                info = result["compile_info"]
+                format_info = info.replace("<br>", "\n")
+                print format_info
+                print "Compile Error\n"
+            elif result["status"] == "Wrong Answer":
+                input = result["input"].replace("<pre><code>","").replace("</code></pre>","").replace("&quot;","\"").strip()
+                output = result["output"].replace("<pre><code>","").replace("</code></pre>","").replace("&quot;","\"").strip()
+                expected = result["expected"].replace("<pre><code>","").replace("</code></pre>","").replace("&quot;","\"").strip()
+                stdout = result["stdout"].replace("<pre><code>","").replace("</code></pre>","").replace("&quot;","\"").strip()
+                print "stdout:\n" + stdout
+                print "input:\n" + input
+                print "output:\n" + output
+                print "expect:\n" + expected
+                print "Wrong Answer"
+            elif result["status"] == "Time Limit Exceeded":
+                stdout = result["stdout"].replace("<pre><code>","").replace("</code></pre>","").strip()
+                input = result["input"].replace("<pre><code>","").replace("</code></pre>","").strip()
+                if stdout != "":
+                    print stdout
+                print "input:\n" + input
+                print "Time Limit Exceeded"
+            else:
+                print json.dumps(result, indent=2, ensure_ascii=False)
+        else:
+            print "usage:"
+            print "python http.py login"
+            print "python http.py test id"
+            print "python http.py submit id"       
+    except:
+        print str(traceback.format_exc())
