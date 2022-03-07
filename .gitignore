@@ -1,1 +1,3 @@
 user.py
+token_file
+**/*.pyc
