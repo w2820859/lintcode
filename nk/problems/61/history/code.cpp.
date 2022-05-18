@@ -1,0 +1,25 @@
+class Solution {
+public:
+    Solution() {}
+    ~Solution() {}
+    // numbers: numbers
+    // target: target
+    // ret: 
+    vector<int> twoSum(vector<int> numbers, int target) {
+        std::sort(numbers.begin(), numbers.end());
+        auto begin = numbers.begin();
+        auto end = numbers.end();
+        --end;
+        while (begin != end) {
+            int sum = *begin + *end;
+            if (sum > target) {
+                --end;
+            } else if (sum < target) {
+                ++begin;
+            } else {
+                return {*begin, *end};
+            }
+        }
+        return {};
+    }
+};

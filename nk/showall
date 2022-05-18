@@ -1,0 +1,6 @@
+#!/bin/sh
+files=`find problems -name "title"`
+for file in $files
+do
+    echo $file"\t"`cat $file`
+done

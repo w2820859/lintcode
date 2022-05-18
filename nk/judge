@@ -1,0 +1,46 @@
+#!/bin/sh
+
+id=`cat ./current_id`
+
+# 构造测试main函数
+if [ -e testing ];then
+    rm -rf testing
+fi
+mkdir testing
+python framework/construct_main.py problems/$id/meta.json ./testing/main.cpp
+
+# 复制算法代码到框架
+cp framework/algo.hpp ./testing/algo.hpp
+cp framework/dumper.h ./testing/
+cp framework/parser.h ./testing/
+cp framework/common_header.h ./testing/
+cat ./code.cpp >> ./testing/algo.hpp
+
+cd ./testing/
+# 编译
+/usr/bin/gcc -std=c++11 -lstdc++ ./main.cpp -o exe > compile.log 2>&1
+if [ $? -ne 0 ]
+then
+    cat compile.log
+    echo "Compile Failed"
+    cd ..
+    exit 1
+fi
+cd ..
+
+for t_case in `ls problems/$id/test_suite/`; do
+    # 执行测试用例
+    cat problems/$id/test_suite/$t_case/input | xargs testing/exe > testing/output
+    if [ $? -eq 255 ];then
+        echo "Param number error"
+        exit 1
+    fi
+    
+    # 验证输出
+    python framework/diff.py problems/$id/test_suite/$t_case/output  testing/output
+    if [ $? -ne 0 ];then
+        echo "Fail: problems/$id/test_suite/$t_case"
+        exit 1
+    fi
+done
+echo "Success"

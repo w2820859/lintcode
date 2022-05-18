@@ -1,0 +1,8 @@
+{
+"func": "func",
+"params": [
+    ["int", "input1", "comm1"],
+    ["vector<int>", "input2", "comm2"]
+],
+"ret": ["int", "commret"]
+}

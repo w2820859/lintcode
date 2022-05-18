@@ -1,0 +1,13 @@
+#!//bin/sh
+
+id=$1
+
+if [ ! -e problems/$id ];then
+    echo "problem ID not exist"
+    exit 1
+fi
+
+#cp problems/$problem_id/template/code.cpp ./code.cpp
+python framework/construct_solution.py problems/$id/meta.json code.cpp
+
+echo $id > ./current_id

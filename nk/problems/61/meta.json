@@ -1,0 +1,8 @@
+{
+    "func": "twoSum",
+    "params": [
+        ["vector<int>", "numbers", "numbers"],
+        ["int", "target", "target"]
+    ],
+    "ret": ["vector<int>", ""]
+}

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+problem_id=$1
+
+if [ ! -e problems/$problem_id ];then
+    echo "problem ID [$problem_id] not exist"
+    exit 1
+fi
+
+cat problems/$problem_id/title
+echo 
+cat problems/$problem_id/desc
+

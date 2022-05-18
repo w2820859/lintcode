@@ -1,0 +1,11 @@
+#!/bin/sh
+
+id=`cat ./current_id`
+file_name="code.cpp.`md5sum ./code.cpp | awk -F' ' '{print $1}'`"
+cp ./code.cpp problems/$id/history/$file_name
+if [ $? -eq 0 ]; then
+    git add problems/$id/history/$file_name
+    echo "Save Success"
+else
+    echo "Sqve Fail"
+fi
