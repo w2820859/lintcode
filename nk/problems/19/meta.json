@@ -1,0 +1,7 @@
+{
+    "func": "FindGreatestSumOfSubArray",
+    "params": [
+        ["vector<int>", "array", "array"],
+    ],
+    "ret": ["int", ""]
+}

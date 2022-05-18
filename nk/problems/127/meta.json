@@ -1,0 +1,8 @@
+{
+    "func": "LCS",
+    "params": [
+        ["string", "str1", ""],
+        ["string", "str2", ""]
+    ],
+    "ret": ["string", ""]
+}

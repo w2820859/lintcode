@@ -1,0 +1,8 @@
+{
+    "func": "GetLeastNumbers_Solution",
+    "params": [
+        ["vector<int>", "input", "input"],
+        ["int", "k", "k"]
+    ],
+    "ret": ["vector<int>", ""]
+}

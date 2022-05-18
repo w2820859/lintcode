@@ -1,6 +1,10 @@
 #!/bin/sh
 
 id=`cat ./current_id`
+if [ ! -e problems/$id/history ];then
+    mkdir problems/$id/history
+fi
+
 file_name="code.cpp.`md5sum ./code.cpp | awk -F' ' '{print $1}'`"
 cp ./code.cpp problems/$id/history/$file_name
 if [ $? -eq 0 ]; then

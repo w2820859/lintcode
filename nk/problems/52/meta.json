@@ -1,0 +1,7 @@
+{
+    "func": "isValid",
+    "params": [
+        ["string", "s", "括号字符串"],
+    ],
+    "ret": ["bool", ""]
+}

@@ -1,0 +1,7 @@
+{
+    "func": "MySort",
+    "params": [
+        ["vector<int>", "arr", "arr"]
+    ],
+    "ret": ["vector<int>", "sorted arr"]
+}
