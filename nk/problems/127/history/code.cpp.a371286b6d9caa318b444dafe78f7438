@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string LCS(string str1, string str2) {
+        vector<vector<int>> dp(str1.size() + 1, vector<int>(str2.size() + 1, 0));
+        int max_len = 0;
+        for (int x = 1; x <= str1.size(); ++x) {
+            for (int y = 1; y <= str2.size(); ++y) {
+                if (str1[x-1] == str2[y-1]) {
+                    dp[x][y] = dp[x-1][y-1] + 1;
+                } else {
+                    dp[x][y] = 0;
+                }
+                max_len = max(max_len, dp[x][y]);
+            }
+        }
+        int x_pos = 0;
+        int y_pos = 0;
+        auto find_p = [&str1, &str2, &max_len, &dp, &x_pos, &y_pos]() {
+            for (int x = 1; x <= str1.size(); ++x) {
+                for (int y = 1; y <= str2.size(); ++y) {
+                    if (dp[x][y] == max_len) {
+                        x_pos = x;
+                        y_pos = y;
+                        return;
+                    }
+                }
+            }
+        };
+        find_p();
+        return str1.substr(x_pos - max_len, max_len);
+    }
+};

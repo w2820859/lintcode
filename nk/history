@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find . -name "code.cpp.*" | grep -E $1'/.*/code.cpp.[0-9a-z]{32}$'

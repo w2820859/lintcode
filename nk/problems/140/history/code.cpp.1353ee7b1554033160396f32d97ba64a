@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> MySort(vector<int> arr) {
+        _sort(arr, 0, arr.size());
+        return arr;
+    }
+    void _sort(vector<int>& arr, int b, int e) {
+        if (b == e) return;
+        int p = partition(arr, b + 1, e, arr[b]);
+        swap(arr[b], arr[p - 1]);
+        _sort(arr, b, p - 1);
+        _sort(arr, p, e);
+    }
+    int partition(vector<int>& arr, int b, int e, int target) {
+        while (b < e) {
+            while (b < e && arr[b] < target) ++b;
+            while (b < e && arr[e - 1] >= target) --e;
+            if (b < e) swap(arr[b], arr[e - 1]);
+        }
+        return b;
+    }
+};

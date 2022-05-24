@@ -1,14 +1,18 @@
+#pragma once
 #include "common_header.h"
 
-string dump_str(const string& x) {
-    return x;
+static string dump_string(const string& x) {
+    string ret = "\"";
+    ret += x;
+    ret += '\"';
+    return ret;
 }
 
-string dump_int(int x) {
+static string dump_int(int x) {
     return to_string(x);
 }
 
-string dump_vector_int(const vector<int>& x) {
+static string dump_vector_int(const vector<int>& x) {
     stringstream oss;
     if (x.empty()) {
         return "";
@@ -16,6 +20,21 @@ string dump_vector_int(const vector<int>& x) {
         oss << x[0];
         for (int i = 1; i < x.size(); ++i) {
             oss << "," << x[i];
+        }
+    }
+    return oss.str();
+}
+
+static string dump_set_int(const set<int>& x) {
+    stringstream oss;
+    if (x.empty()) {
+        return "";
+    } else {
+        auto b = x.begin();
+        oss << *b;
+        ++b;
+        for (; b != x.end(); ++b) {
+            oss << "," << *b;
         }
     }
     return oss.str();

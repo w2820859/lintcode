@@ -30,7 +30,7 @@ cd ..
 
 for t_case in `ls problems/$id/test_suite/`; do
     # 执行测试用例
-    cat problems/$id/test_suite/$t_case/input | xargs testing/exe > testing/output
+    cat problems/$id/test_suite/$t_case/input | xargs testing/exe > testing/std_out
     if [ $? -eq 255 ];then
         echo "Param number error"
         exit 1
@@ -40,6 +40,11 @@ for t_case in `ls problems/$id/test_suite/`; do
     python framework/diff.py problems/$id/test_suite/$t_case/output  testing/output
     if [ $? -ne 0 ];then
         echo "Fail: problems/$id/test_suite/$t_case"
+        echo "expect:["`cat problems/$id/test_suite/$t_case/output`"] real:["`cat testing/output`"]"
+        echo "input:"
+        cat problems/$id/test_suite/$t_case/input
+        echo "std out:"
+        cat testing/std_out
         exit 1
     fi
 done

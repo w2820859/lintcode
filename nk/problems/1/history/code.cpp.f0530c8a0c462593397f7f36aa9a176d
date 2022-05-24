@@ -1,0 +1,47 @@
+class Solution {
+public:
+    Solution() {
+
+    }
+    ~Solution() {}
+    string solve(string s, string t) {
+        string ret = "";
+        if (s.empty()) return t;
+        if (t.empty()) return s;
+        reverse(s.begin(), s.end());
+        reverse(t.begin(), t.end());
+        int flag = 0;
+        int idxs = 0, idxt = 0;
+        while (idxs < s.size() && idxt < t.size()) {
+            int sum = get_value(s[idxs]) + get_value(t[idxt]) + flag;
+            ret += get_char(sum % 10);
+            flag = sum / 10;
+            ++idxs;
+            ++idxt;
+        }
+        while (idxs < s.size()) {
+            int sum = get_value(s[idxs]) + flag;
+            ret += get_char(sum % 10);
+            flag = sum / 10;
+            ++idxs;
+        }
+        while (idxt < t.size()) {
+            int sum = get_value(t[idxt]) + flag;
+            ret += get_char(sum % 10);
+            flag = sum / 10;
+            ++idxt;
+        }
+        if (flag != 0) {
+            ret += '1';
+        }
+        reverse(ret.begin(), ret.end());
+        return ret;
+    }
+    int get_value(char c) {
+        return c - '0';
+    }
+    char get_char(int i) {
+        static int base = int('0');
+        return char(i + base);
+    }
+};

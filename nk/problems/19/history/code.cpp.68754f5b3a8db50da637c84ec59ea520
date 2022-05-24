@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int FindGreatestSumOfSubArray(vector<int> array) {
+        int sum,max_sum = INT_MIN;
+        for (auto x : array) {
+            sum = max(sum + x, x);
+            max_sum = max(max_sum, sum);
+        }
+        return max_sum;
+    }
+};

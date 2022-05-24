@@ -4,5 +4,5 @@
         ["vector<int>", "input", "input"],
         ["int", "k", "k"]
     ],
-    "ret": ["vector<int>", ""]
+    "ret": ["set<int>", ""]
 }

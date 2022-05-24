@@ -1,7 +1,7 @@
 {
     "func": "FindGreatestSumOfSubArray",
     "params": [
-        ["vector<int>", "array", "array"],
+        ["vector<int>", "array", ""]
     ],
     "ret": ["int", ""]
 }
