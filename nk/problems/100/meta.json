@@ -1,0 +1,7 @@
+{
+    "func": "StrToInt",
+    "params": [
+        ["string", "s", ""]
+    ],
+    "ret": ["int", ""]
+}

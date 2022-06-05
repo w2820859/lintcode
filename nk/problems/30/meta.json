@@ -1,0 +1,7 @@
+{
+    "func": "minNumberDisappeared",
+    "params": [
+        ["vector<int>", "nums", ""]
+    ],
+    "ret": ["int", ""]
+}

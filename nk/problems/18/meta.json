@@ -1,0 +1,8 @@
+{
+    "func": "rotateMatrix",
+    "params": [
+        ["vector<vector<int>>", "mat", ""],
+        ["int", "n", ""]
+    ],
+    "ret": ["vector<vector<int>>", ""]
+}

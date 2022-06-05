@@ -1,0 +1,7 @@
+{
+    "func": "reverse",
+    "params": [
+        ["int", "x", ""]
+    ],
+    "ret": ["int", ""]
+}

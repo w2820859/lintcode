@@ -1,0 +1,8 @@
+{
+    "func": "solve",
+    "params": [
+        ["string", "s", ""],
+        ["string", "t", ""]
+    ],
+    "ret": ["string", ""]
+}
