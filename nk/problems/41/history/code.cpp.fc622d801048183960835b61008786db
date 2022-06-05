@@ -1,0 +1,25 @@
+class Solution {
+public:
+    /**
+     * 
+     * @param arr int整型vector the array
+     * @return int整型
+     */
+    int maxLength(vector<int>& arr) {
+        int max_len = 0;
+        std::unordered_map<int, int> m;
+        int left = -1;
+        for (int i = 0; i < arr.size(); ++i) {
+            auto iter = m.find(arr[i]);
+            if (iter != m.end()) {
+                while (left < iter->second) {
+                    m.erase(arr[left + 1]);
+                    ++left;
+                }
+            }
+            m.insert(make_pair(arr[i], i));
+            max_len = max(max_len, i - left);
+        }
+        return max_len;
+    }
+};

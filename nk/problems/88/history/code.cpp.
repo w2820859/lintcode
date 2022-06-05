@@ -1,0 +1,7 @@
+class Solution {
+public:
+    int findKth(vector<int> a, int n, int K) {
+        std::sort(a.begin(), a.end(), std::greater<int>());
+        return a[K - 1];
+    }
+};

@@ -1,7 +1,7 @@
 {
-    "func": "",
+    "func": "maxLength",
     "params": [
-        ["", "", ""],
+        ["vector<int>", "arr", ""]
     ],
-    "ret": ["", ""]
+    "ret": ["int", ""]
 }

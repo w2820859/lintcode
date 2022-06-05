@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findKth(vector<int> a, int n, int K) {
+        std::random_shuffle(a.begin(), a.end());
+        auto begin = a.begin();
+        auto end = a.begin() + n;
+        auto target = begin + K - 1;
+        do {
+            int x = *begin;
+            auto greater_x = [x] (int b) {return b > x;};
+            auto p = std::partition(begin, end, greater_x);
+            if (p < target) {
+                begin = p == begin ? p + 1 : p;
+            } else if (p > target) {
+                end = p;
+            } else {
+                return x;
+            }
+        } while (true);
+    }
+};

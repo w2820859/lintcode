@@ -47,5 +47,6 @@ for t_case in `ls problems/$id/test_suite/`; do
         cat testing/std_out
         exit 1
     fi
+    echo "$t_case success"
 done
 echo "Success"

@@ -22,6 +22,7 @@ for param in meta['params']:
     entry_file.write('    ' + param[0] + ' ' + param_name + ' = ' + parser[param[0]] % ('argv[' + str(param_num) + ']') + ";\n")
 entry_file.write('    ' + meta['ret'][0] + ' ret = so.' + meta['func'] + '(' + ','.join(params) + ');\n')
 entry_file.write('    ' + 'ofs << ' + dumper[meta['ret'][0]] + ';' + '\n')
+entry_file.write('    ofs << std::flush;\n')
 entry_file.write('    ofs.close();\n')
 entry_file.write('    return true;\n')
 entry_file.write('}\n')

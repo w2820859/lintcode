@@ -1,0 +1,9 @@
+{
+    "func": "findKth",
+    "params": [
+        ["vector<int>", "a", ""],
+        ["int", "n", ""],
+        ["int", "K", ""]
+    ],
+    "ret": ["int", ""]
+}
