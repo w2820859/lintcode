@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string solve(vector<int> nums) {
+        auto compare = [] (int a, int b) {
+            // 20 -> 02 => 102
+            int n = 1;
+            while (a != 0) {
+                n = n * 10 + a % 10;
+                a = a / 10;
+            }
+            a = n;
+            while (b != 0) {
+                n = n * 10 + b % 10;
+                b = b / 10;
+            }
+            b = n;
+            while (a != 0 && b != 0) {
+                int suffix_a = a % 10;
+                int suffix_b = b % 10;
+                if (suffix_a > suffix_b) return true;
+                if (suffix_a < suffix_b) return false;
+                a = a / 10;
+                b = b / 10;
+            }
+            if (a == 0) return true;
+            return false;
+        };
+        std::sort(nums.begin(), nums.end(), compare);
+        ostringstream oss;
+        for (auto x : nums) {
+            oss << x;
+        }
+        return oss.str();
+    }
+};

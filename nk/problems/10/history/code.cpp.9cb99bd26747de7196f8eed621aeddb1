@@ -1,0 +1,58 @@
+class Solution {
+public:
+    string solve(string s, string t) {
+        string ret = "";
+        reverse(s.begin(), s.end());
+        reverse(t.begin(), t.end());
+        int carry = 0;
+        vector<string> numbers;
+        for (int i = 0; i < s.size(); ++i) {
+            string num = "";
+            for (int x = 0; x < i; ++x) {
+                num.push_back('0');
+            }
+            for (int j = 0; j < t.size(); ++j) {
+                int product = (s[i] - '0') * (t[i] - '0') + carry;
+                num.push_back('0' + product % 10);
+                carry = product / 10;
+            }
+            while (carry != 0) {
+                num.push_back('0' + carry % 10);
+                carry /= 10;
+            }
+            numbers.push_back(num);
+        }
+        string sum_str = "";
+        for (int i = 0; i < numbers.size(); ++i) {
+            int l1 = 0;
+            int l2 = 0;
+            string temp = "";
+            while (l1 < sum_str.size() && l2 < numbers[i].size()) {
+                int sum = (sum_str[l1] - '0') + (numbers[i][l2] - '0') + carry;
+                temp.push_back('0' + sum % 10);
+                carry = sum / 10;
+                ++l1;
+                ++l2;
+            }
+            while (l1 < sum_str.size()) {
+                int sum = (sum_str[l1] - '0') + carry;
+                temp.push_back('0' + sum % 10);
+                carry = sum / 10;
+                ++l1;
+            }
+            while (l2 < numbers[i].size()) {
+                int sum = (numbers[i][l2] - '0') + carry;
+                temp.push_back('0' + sum % 10);
+                carry = sum / 10;
+                ++l2;
+            }
+            while (carry != 0) {
+                temp.push_back('0' + carry % 10);
+                carry /= 10;
+            }
+            sum_str = temp;
+        }
+        reverse(sum_str.begin(), sum_str.end());
+        return sum_str;
+    }
+};

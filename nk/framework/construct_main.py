@@ -24,6 +24,6 @@ entry_file.write('    ' + meta['ret'][0] + ' ret = so.' + meta['func'] + '(' + '
 entry_file.write('    ' + 'ofs << ' + dumper[meta['ret'][0]] + ';' + '\n')
 entry_file.write('    ofs << std::flush;\n')
 entry_file.write('    ofs.close();\n')
-entry_file.write('    return true;\n')
+entry_file.write('    return 0;\n')
 entry_file.write('}\n')
 entry_file.close()

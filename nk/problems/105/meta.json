@@ -1,0 +1,8 @@
+{
+    "func": "search",
+    "params": [
+        ["vector<int>", "nums", ""],
+        ["int", "target", ""]
+    ],
+    "ret": ["int", ""]
+}

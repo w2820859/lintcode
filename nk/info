@@ -1,13 +1,17 @@
 #!/bin/sh
 
-problem_id=$1
+if [ 0 -eq $# ]; then
+    id=`cat ./current_id`
+else
+    id=$1
+fi
 
-if [ ! -e problems/$problem_id ];then
-    echo "problem ID [$problem_id] not exist"
+if [ ! -e problems/$id ];then
+    echo "problem ID [$id] not exist"
     exit 1
 fi
 
-cat problems/$problem_id/title
+cat problems/$id/title
 echo 
-cat problems/$problem_id/desc
+cat problems/$id/desc
 

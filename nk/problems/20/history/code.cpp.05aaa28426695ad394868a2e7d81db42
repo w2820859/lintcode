@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> ips;
+        for (int a = 1; a <= s.size() - 3; ++a) {
+            if (a > 3) break;
+            if (s[0] == '0') break;
+            string sa = s.substr(0, a);
+            int inta = stoi(sa);
+            if (inta > 255) break;
+            for (int b = a + 1; b <= s.size() - 2; ++b) {
+                if (b - a > 3) break;
+                if (s[a] == '0') break;
+                string sb = s.substr(a, b - a);
+                int intb = stoi(sb);
+                if (intb > 255) break;
+                for (int c = b + 1; c <= s.size() - 1; ++c) {
+                    if (c - b > 3) break;
+                    if (s[b] == '0') break;
+                    string sc = s.substr(b, c - b);
+                    int intc = stoi(sc);
+                    if (intc > 255) break;
+
+                    if (s.size() - c > 3) continue;
+                    if (s[c] == '0') continue;
+                    string sd = s.substr(c, s.size() - c);
+                    int intd = stoi(sd);
+                    if (intd > 255) continue;
+                    ips.push_back(sa + "." + sb + "." + sc + "." + sd);
+                }
+            }
+        }
+        return ips;
+    }
+};

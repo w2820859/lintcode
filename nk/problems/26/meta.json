@@ -1,0 +1,7 @@
+{
+    "func": "generateParenthesis",
+    "params": [
+        ["int", "n", ""]
+    ],
+    "ret": ["vector<string>", ""]
+}
