@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ret;
+        string s = "";
+        recur(s, ret, n, n);
+        return ret;
+    }
+    void recur(string s, vector<string>& res, int left, int right) {
+        if (left == 0 && right == 0) {
+            res.push_back(s);
+            return;
+        }
+        if (left > 0) recur(s + "(", res, left - 1, right);
+        if (right > left) recur(s + ")", res, left, right - 1);
+    }
+};

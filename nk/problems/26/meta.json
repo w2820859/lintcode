@@ -3,5 +3,5 @@
     "params": [
         ["int", "n", ""]
     ],
-    "ret": ["set<string>", ""]
+    "ret": ["vector<string>", ""]
 }
