@@ -1,0 +1,8 @@
+{
+    "func": "minMoney",
+    "params": [
+        ["vector<int>", "arr", ""],
+        ["int", "aim", ""]
+    ],
+    "ret": ["int", ""]
+}

@@ -1,0 +1,8 @@
+{
+    "func": "minWindow",
+    "params": [
+        ["string", "S", ""],
+        ["string", "T", ""]
+    ],
+    "ret": ["string", ""]
+}

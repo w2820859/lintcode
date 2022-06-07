@@ -1,0 +1,7 @@
+{
+    "func": "findPeakElement",
+    "params": [
+        ["vector<int>", "nums", ""]
+    ],
+    "ret": ["int", ""]
+}

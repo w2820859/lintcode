@@ -1,0 +1,9 @@
+{
+    "func": "solve",
+    "params": [
+        ["int", "n", ""],
+        ["int", "m", ""],
+        ["vector<int>", "a", ""]
+    ],
+    "ret": ["vector<int>", ""]
+}
