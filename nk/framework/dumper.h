@@ -12,6 +12,11 @@ static string dump_int(int x) {
     return to_string(x);
 }
 
+static string dump_bool(bool x) {
+    if (x) return "true";
+    return "false";
+}
+
 static string dump_vector_int(const vector<int>& x) {
     stringstream oss;
     if (x.empty()) {

@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<int> solve(int n, int m, vector<int> a) {
+        if (m > n) m = m % n;
+        int pos = n - m;
+        int b = 0, e = pos;
+        while (b < e) swap(a[b++], a[e-- - 1]);
+        b = pos;
+        e = n;
+        while (b < e) swap(a[b++], a[e-- - 1]);
+        b = 0;
+        e = n;
+        while (b < e) swap(a[b++], a[e-- - 1]);
+        return a;
+    }
+};

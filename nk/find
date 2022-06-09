@@ -1,0 +1,13 @@
+#!/bin/sh
+
+files=`find problems -name "title"`
+for file in $files; do
+    ids=`echo $file | grep -oE '[0-9]+'`
+    for id in $ids; do
+        res=`find . -name 'code.cpp.*' | grep -oE '.*/code.cpp.[0-9a-z]{32}$' | grep problems/$id/`
+        if [ "$res" == "" ] && [ "$id" != "0" ]; then
+            echo "$id\t"`cat problems/$id/title`
+        fi
+    done
+done
+#find . -name 'code.cpp.*' | grep -oE '.*/code.cpp.[0-9a-z]{32}$' | grep problems/$id/

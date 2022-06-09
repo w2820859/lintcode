@@ -9,6 +9,13 @@ static int parse_int(const string& str) {
     return atoi(str.c_str());
 }
 
+static bool parse_bool(const string& str) {
+    if (str == "true") {
+        return true;
+    }
+    return false;
+}
+
 static vector<int> parse_vector_int(const string& str) {
     stringstream ss(str) ;
     vector<int> ret;

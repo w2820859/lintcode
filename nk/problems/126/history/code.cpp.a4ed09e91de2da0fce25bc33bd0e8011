@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minMoney(vector<int> arr, int aim) {
+        vector<long long> dp(aim + 1, -1);
+        dp[0] = 0;
+        for (int val : arr) {
+            int incr = val;
+            int count = 1;
+            while (incr <= aim) {
+                for (int i = 0; i <= aim - incr; ++i) {
+                    if (dp[i] != -1) {
+                        if (dp[i + incr] == -1 || dp[i + incr] > dp[i] + count) {
+                            dp[i + incr] = dp[i] + count;
+                        }
+                    }
+                }
+                incr += val;
+                ++count;
+            }
+        }
+        return dp[aim];
+    }
+};
